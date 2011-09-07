@@ -1,0 +1,4 @@
+*.o
+test
+webob
+*.core
