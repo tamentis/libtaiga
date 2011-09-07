@@ -1,6 +1,7 @@
 CC=gcc
 OBJECTS=response.o test.o
 PROGRAM=test
+CFLAGS=-g -Wall
 
 all: $(PROGRAM)
 
