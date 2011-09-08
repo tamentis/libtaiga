@@ -1,5 +1,5 @@
 CC=gcc
-OBJECTS=response.o test.o
+OBJECTS=request.o response.o test.o
 PROGRAM=test
 CFLAGS=-g -Wall
 

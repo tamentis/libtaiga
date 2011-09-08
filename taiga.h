@@ -21,10 +21,10 @@ enum request_method_enum {
  */
 typedef struct _tg_request {
 	uint64_t content_length;
-	wchar_t content_type[CONTENT_TYPE_SIZE];
-	wchar_t server_protocol[SERVER_PROTOCOL_SIZE];
-	wchar_t remote_user[REMOTE_USER_SIZE];
-	wchar_t query_string[QUERY_STRING_SIZE];
+	char content_type[CONTENT_TYPE_SIZE];
+	char server_protocol[SERVER_PROTOCOL_SIZE];
+	char remote_user[REMOTE_USER_SIZE];
+	char *query_string;
 	enum request_method_enum request_method;
 } tg_request;
 
@@ -35,6 +35,6 @@ typedef struct _tg_request {
 typedef struct _tg_response {
 	wchar_t content_type[CONTENT_TYPE_SIZE];
 	uint64_t content_length;
-	wchar_t *content_buffer;
+	char *content_buffer;
 	FILE *content_fp;
 } tg_response;
