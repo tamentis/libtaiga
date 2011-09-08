@@ -33,8 +33,16 @@ typedef struct _tg_request {
  * A tg_response is returned by every action in the system.
  */
 typedef struct _tg_response {
-	wchar_t content_type[CONTENT_TYPE_SIZE];
+	char content_type[CONTENT_TYPE_SIZE];
 	uint64_t content_length;
 	char *content_buffer;
 	FILE *content_fp;
 } tg_response;
+
+
+typedef struct _tg_route {
+	char pattern[256];
+	tg_response * (*func)(tg_request *);
+	int params[256];
+} tg_route;
+

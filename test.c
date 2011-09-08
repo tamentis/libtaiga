@@ -1,8 +1,13 @@
 #include <locale.h>
 #include <stdio.h>
+
+#include <pcre.h>
+
 #include "taiga.h"
 
+
 extern char **environ;
+
 
 void
 print_env(void)
@@ -38,7 +43,24 @@ main(int argc, char **argv)
 	/* uploaded files and forms ... tbd */
 	in = fread(buf, 1, 4096, stdin);
 
-	print_env();
+	int rc;
+	int ovector[30];
+	char subject[] = "/woot/12";
+	const char *error;
+	int erroffset;
+	pcre *re = pcre_compile("/woot/(?<id>\\d+)", 0, &error, &erroffset, NULL);
+	printf("re***********%s***************\n", re);
+
+	rc = pcre_exec(re, NULL, subject, strlen(subject), 0, 0, ovector, 30);
+
+	printf("rc***********%d***************\n", rc);
+
+	char buffer[256];
+
+	pcre_copy_named_substring(re, subject, ovector, 30, "id", buffer, 256);
+	printf("grp**********%s***************\n", buffer);
+
+	// print_env();
 
 	printf("test (%d): %s\n", in, buf);
 
@@ -56,18 +78,30 @@ main(int argc, char **argv)
  * as an array of constants defining their types.
  */
 
+tg_response *
+func_create(tg_request *request)
 {
-	{"create",	func_create,	NULL},
-	{"edit", 	func_edit,	{ ROUTE_PARAM_TYPE_INTEGER } },
-}
-
-
-
-/* In a normal CGI context, you just need to define tg_cgi_main() */
-tg_reponse *response
-tg_cgi_main(tg_request *request)
-{
+	print_env();
 	return NULL;
 }
 
-/* In a FCGI env, you need to define tg_fcgi_init
+
+tg_response *
+func_edit(tg_request *request)
+{
+	print_env();
+	return NULL;
+}
+
+
+tg_route routes[] = {
+	{"/hello_world/\\d+",	&func_create,	{ 1, 2, 3 }},
+	{"/bye_world",		&func_edit,	{ 1, 2, 3 }}
+};
+
+
+/* In a normal CGI context, you just need to define tg_cgi_main() */
+/*
+*/
+
+/* In a FCGI env, you need to define tg_fcgi_init */

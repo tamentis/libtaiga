@@ -27,9 +27,12 @@ tg_request *
 tg_request_new_from_env()
 {
 	tg_request *request;
+	const char *qs;
 
 	request = tg_request_new();
-	request->query_string = strdup(getenv("QUERY_STRING"));
+	qs = getenv("QUERY_STRING");
+	if (qs != NULL)
+		request->query_string = strdup(qs);
 
 	return request;
 }
